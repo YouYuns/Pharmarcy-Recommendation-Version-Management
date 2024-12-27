@@ -1,0 +1,7 @@
+spring:
+  application.name: recommend-project
+  datasource:
+    url: jdbc:postgresql://localhost:5432/board
+    username: shyun
+    password: 1234
+    driver-class-name: org.postgresql.Driver
