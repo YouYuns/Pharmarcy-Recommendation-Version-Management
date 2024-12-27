@@ -1,7 +1,30 @@
 spring:
-  application.name: recommend-project
-  datasource:
-    url: jdbc:postgresql://localhost:5432/board
-    username: shyun
-    password: 1234
-    driver-class-name: org.postgresql.Driver
+  profiles:
+    active: local # default
+    group:
+      local:
+        - common
+      prod:
+        - common
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: common
+
+# ...
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
