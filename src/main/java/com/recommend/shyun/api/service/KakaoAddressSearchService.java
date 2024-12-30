@@ -24,7 +24,7 @@ public class KakaoAddressSearchService {
 
     private final KakaoUriBuilderService kakaoUriBuilderService;
 
-    @Value("${kakao.rest.api.key}")
+    @Value("${KAKAO_REST_API_KEY}")
     private String kakaoRestApiKey;
 
 
