@@ -1,5 +1,6 @@
-package com.recommend.shyun.api.pharmacy.entity;
+package com.recommend.shyun.pharmacy.entity;
 
+import com.recommend.shyun.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,7 +17,7 @@ import org.hibernate.query.sql.internal.ParameterRecognizerImpl;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Pharmacy {
+public class Pharmacy extends BaseTimeEntity {
 
     @Id
     //DB가 PK값을 대신 생성해주는 전략
@@ -31,4 +32,7 @@ public class Pharmacy {
     private double longitude;
 
 
+    public void changePharmachAddress(String addres){
+        this.pharmacyAddress = addres;
+    }
 }

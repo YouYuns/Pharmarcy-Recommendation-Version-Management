@@ -1,9 +1,10 @@
 package com.recommend.shyun.pharmacy.repository
 
 import com.recommend.shyun.AbstractIntegrationContainerBaseTest
-import com.recommend.shyun.api.pharmacy.entity.Pharmacy
-import com.recommend.shyun.api.pharmacy.repository.PharmachRepository
+import com.recommend.shyun.pharmacy.entity.Pharmacy
 import org.springframework.beans.factory.annotation.Autowired
+
+import java.time.LocalDateTime
 
 class PharmacyRepositoryTest extends AbstractIntegrationContainerBaseTest{
 
@@ -60,5 +61,31 @@ class PharmacyRepositoryTest extends AbstractIntegrationContainerBaseTest{
 
         then:
         result.size() == 1
+    }
+
+
+    def "BaseTimeEntity 등록"() {
+        given:
+        LocalDateTime now = LocalDateTime.now();
+        String address = "서울 특별시 노원구 상계동"
+        String name = "성호 약국"
+
+
+        def pharmacy =  Pharmacy.builder()
+        .pharmacyAddress(address)
+        .pharmacyName(name)
+        .build();
+
+
+        when:
+        pharmachRepository.save(pharmacy);
+
+        def result =  pharmachRepository.findAll();
+
+        then:
+        result.get(0).getCreatedDate().isAfter(now)
+        result.get(0).getModifiedDate().isAfter(now)
+
+
     }
 }
