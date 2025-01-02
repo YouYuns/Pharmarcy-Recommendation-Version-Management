@@ -2,6 +2,7 @@ package com.recommend.shyun.direction.service;
 
 
 import com.recommend.shyun.api.dto.DocumentDto;
+import com.recommend.shyun.api.service.KakaoCategorySearchService;
 import com.recommend.shyun.direction.entity.Direction;
 import com.recommend.shyun.direction.repository.DirectionRepository;
 import com.recommend.shyun.pharmacy.service.PharmacySearchService;
@@ -27,6 +28,8 @@ public class DirectionService {
     private final PharmacySearchService pharmacySearchService;
 
     private final DirectionRepository directionRepository;
+
+    private final KakaoCategorySearchService  kakaoCategorySearchService;
 
 
     @Transactional
@@ -66,6 +69,31 @@ public class DirectionService {
                 .collect(Collectors.toList());
         //거리계산 알고리즘을 이용하여, 고객와 약국 사이의 거리를 계산하고 sort
     }
+
+
+
+    // pharmacy search by category kakao api
+    public List<Direction> buildDirectionListByCategoryApi(DocumentDto inputDocumentDto) {
+        if(Objects.isNull(inputDocumentDto)) return Collections.emptyList();
+
+        return kakaoCategorySearchService
+                .requestPharmacyCategorySearch(inputDocumentDto.getLatitude(), inputDocumentDto.getLongitude(), RADIUS_KM)
+                .getDocumentList()
+                .stream().map(resultDocumentDto ->
+                        Direction.builder()
+                                .inputAddress(inputDocumentDto.getAddressName())
+                                .inputLatitude(inputDocumentDto.getLatitude())
+                                .inputLongitude(inputDocumentDto.getLongitude())
+                                .targetPharmacyName(resultDocumentDto.getPlaceName())
+                                .targetAddress(resultDocumentDto.getAddressName())
+                                .targetLatitude(resultDocumentDto.getLatitude())
+                                .targetLongitude(resultDocumentDto.getLongitude())
+                                .distance(resultDocumentDto.getDistance() * 0.001) // km 단위
+                                .build())
+                .limit(MAX_SEARCH_COUNT)
+                .collect(Collectors.toList());
+    }
+
 
 
     // Haversine formula 위도경도 계산 알고리즘 그냥 구글에서 가져온 계산식

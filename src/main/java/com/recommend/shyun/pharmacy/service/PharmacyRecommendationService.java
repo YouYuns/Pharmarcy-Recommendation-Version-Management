@@ -41,7 +41,12 @@ public class PharmacyRecommendationService {
 
 
         //위치 거리 계산 알고리즘으로 계산한 가까운 약국 리스트 Direction정보를 가져온다
-        List<Direction> directionList =  directionService.buildDirectionList(documentDto);
+        //공공기관을 이용
+        // List<Direction> directionList =  directionService.buildDirectionList(documentDto);
+
+
+        //카카오 api를 이용
+        List<Direction> directionList =  directionService.buildDirectionListByCategoryApi(documentDto);
 
         //그리고 해당 Direction정보를 DB에 저장
         directionService.saveAll(directionList);
