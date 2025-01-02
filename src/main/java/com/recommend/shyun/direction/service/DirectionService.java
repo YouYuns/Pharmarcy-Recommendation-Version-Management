@@ -3,10 +3,13 @@ package com.recommend.shyun.direction.service;
 
 import com.recommend.shyun.api.dto.DocumentDto;
 import com.recommend.shyun.direction.entity.Direction;
+import com.recommend.shyun.direction.repository.DirectionRepository;
 import com.recommend.shyun.pharmacy.service.PharmacySearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,9 +26,18 @@ public class DirectionService {
 
     private final PharmacySearchService pharmacySearchService;
 
+    private final DirectionRepository directionRepository;
+
+
+    @Transactional
+    public List<Direction> saveAll(List<Direction> directionList) {
+        if(CollectionUtils.isEmpty(directionList)) return Collections.emptyList();
+        return directionRepository.saveAll(directionList);
+    }
+
     //documentDto는 Kakao Api에서 사용했던 Api이다
     //kakao에서 호출한 String address정보의 위도 경도를 갖고와서 찾는다
-    private List<Direction> buildDirectionList(DocumentDto documentDto){
+    public List<Direction> buildDirectionList(DocumentDto documentDto){
 
     
         //고객의 direction 정보없으면 빈리스트 전달
