@@ -38,6 +38,10 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+	// handlebars
+	implementation 'pl.allegro.tech.boot:handlebars-spring-boot-starter:0.3.4'
+
+
 	// spock
 	testImplementation 'org.apache.groovy:groovy:4.0.18'
 	testImplementation 'org.spockframework:spock-core:2.4-M1-groovy-4.0'
