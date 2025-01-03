@@ -39,7 +39,17 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 	// handlebars
-	implementation 'pl.allegro.tech.boot:handlebars-spring-boot-starter:0.3.4'
+	implementation 'com.github.jknack:handlebars:4.4.0'
+	implementation 'com.github.jknack:handlebars-springmvc:4.4.0'
+	implementation 'com.github.jknack:handlebars-guava-cache:4.4.0'
+	implementation 'com.github.jknack:handlebars-helpers:4.4.0'
+	implementation 'com.github.jknack:handlebars-humanize:4.3.1'
+	implementation 'com.github.jknack:handlebars-jackson2:4.3.1'
+	implementation 'joda-time:joda-time:2.12.7'
+
+
+
+
 
 
 	// spock
