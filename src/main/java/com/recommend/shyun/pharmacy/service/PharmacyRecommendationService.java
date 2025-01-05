@@ -6,9 +6,11 @@ import com.recommend.shyun.api.dto.KakaoApiResponseDto;
 import com.recommend.shyun.api.service.KakaoAddressSearchService;
 import com.recommend.shyun.direction.dto.OutputDto;
 import com.recommend.shyun.direction.entity.Direction;
+import com.recommend.shyun.direction.service.Base62Service;
 import com.recommend.shyun.direction.service.DirectionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -23,9 +25,17 @@ import java.util.stream.Collectors;
 @Service
 public class PharmacyRecommendationService {
 
+    private static final String ROAD_VIEW_BASE_URL = "https://map.kakao.com/link/roadview/";
+
     private final KakaoAddressSearchService kakaoAddressSearchService;
 
     private final DirectionService  directionService;
+
+    private final Base62Service base62Service;
+
+    @Value("${pharmacy.recommendation.base.url}")
+    private String baseUrl;
+
 
 
     public List<OutputDto> recommendPharmacyList(String address){
@@ -61,8 +71,8 @@ public class PharmacyRecommendationService {
         return OutputDto.builder()
                 .pharmacyAddress(direction.getTargetAddress())
                 .pharmacyName(direction.getTargetPharmacyName())
-                .directionUrl("todo")
-                .roadViewUrl("todo")
+                .directionUrl(baseUrl + base62Service.encodeDirectionId(direction.getId()))
+                .roadViewUrl(ROAD_VIEW_BASE_URL + direction.getTargetLatitude() + "," + direction.getTargetLongitude())
                 .distance(String.format("%.2f km", direction.getDistance()))
                 .build();
     }
