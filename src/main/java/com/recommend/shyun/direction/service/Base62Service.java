@@ -11,12 +11,16 @@ import org.springframework.stereotype.Service;
 public class Base62Service {
 
     // https://github.com/seruco/base62
+    //인코딩 디코딩
     private static final Base62 base62Instance = Base62.createInstance();
 
+
+    //인코딩 Method
     public String encodeDirectionId(Long directionId) {
         return new String(base62Instance.encode(String.valueOf(directionId).getBytes()));
     }
 
+    //디코딩 Method
     public Long decodeDirectionId(String encodedDirectionId) {
 
         String resultDirectionId = new String(base62Instance.decode(encodedDirectionId.getBytes()));

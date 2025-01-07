@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ public class DirectionService {
     // 반경 10km 이내의 약국들만 검색해준다
     private static final double RADIUS_KM = 10.0;
 
+    private static final String DIRECTION_BASE_URL = "https://map.kakao.com/link/map/";
 
     private final PharmacySearchService pharmacySearchService;
 
@@ -31,11 +33,26 @@ public class DirectionService {
 
     private final KakaoCategorySearchService  kakaoCategorySearchService;
 
+    private final Base62Service base62Service;
+
 
     @Transactional
     public List<Direction> saveAll(List<Direction> directionList) {
         if(CollectionUtils.isEmpty(directionList)) return Collections.emptyList();
         return directionRepository.saveAll(directionList);
+    }
+
+
+    public String findDirectionUrlById(String encodedId){
+        Long decodedId = base62Service.decodeDirectionId(encodedId);
+        Direction direction =  directionRepository.findById(decodedId).orElse(null);
+
+        String params = String.join(",", direction.getTargetPharmacyName(),
+                String.valueOf(direction.getTargetLatitude()), String.valueOf(direction.getTargetLongitude()));
+
+        String result = UriComponentsBuilder.fromHttpUrl(DIRECTION_BASE_URL + params).toUriString();
+
+        return result;
     }
 
     //documentDto는 Kakao Api에서 사용했던 Api이다

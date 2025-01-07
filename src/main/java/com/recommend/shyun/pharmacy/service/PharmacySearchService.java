@@ -1,6 +1,7 @@
 package com.recommend.shyun.pharmacy.service;
 
 
+import com.recommend.shyun.pharmacy.cache.PharmachRedisTemplateService;
 import com.recommend.shyun.pharmacy.dto.PharmacyDto;
 import com.recommend.shyun.pharmacy.entity.Pharmacy;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +18,17 @@ public class PharmacySearchService {
 
     private final PharmarcyRepositorySerivce pharmarcyRepositorySerivce;
 
+    private final PharmachRedisTemplateService pharmachRedisTemplateService;
+
     public List<PharmacyDto> searchPharmacyDtoList (){
 
         //redis
+        List<PharmacyDto> pharmacyDtoList = pharmachRedisTemplateService.findAll();
+        
+        //redis가 비어있지않으면 가져오기
+        if(!pharmacyDtoList.isEmpty()) return pharmacyDtoList;
 
-
+        //문제있어서 비어있으면 db에서 값가져오기
         //db
       return  pharmarcyRepositorySerivce.findAll().stream().map(this::toDto).collect(Collectors.toList());
     }
