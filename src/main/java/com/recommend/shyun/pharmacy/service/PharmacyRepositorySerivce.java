@@ -14,7 +14,7 @@ import java.util.Objects;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class PharmarcyRepositorySerivce {
+public class PharmacyRepositorySerivce {
     private final PharmachRepository pharmachRepository;
 
 

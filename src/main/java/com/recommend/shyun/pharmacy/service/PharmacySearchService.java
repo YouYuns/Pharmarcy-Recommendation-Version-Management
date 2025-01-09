@@ -1,7 +1,7 @@
 package com.recommend.shyun.pharmacy.service;
 
 
-import com.recommend.shyun.pharmacy.cache.PharmachRedisTemplateService;
+import com.recommend.shyun.pharmacy.cache.PharmacyRedisTemplateService;
 import com.recommend.shyun.pharmacy.dto.PharmacyDto;
 import com.recommend.shyun.pharmacy.entity.Pharmacy;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PharmacySearchService {
 
-    private final PharmarcyRepositorySerivce pharmarcyRepositorySerivce;
+    private final PharmacyRepositorySerivce pharmarcyRepositorySerivce;
 
-    private final PharmachRedisTemplateService pharmachRedisTemplateService;
+    private final PharmacyRedisTemplateService pharmachRedisTemplateService;
 
     public List<PharmacyDto> searchPharmacyDtoList (){
 
@@ -26,7 +26,11 @@ public class PharmacySearchService {
         List<PharmacyDto> pharmacyDtoList = pharmachRedisTemplateService.findAll();
         
         //redis가 비어있지않으면 가져오기
-        if(!pharmacyDtoList.isEmpty()) return pharmacyDtoList;
+        if(!pharmacyDtoList.isEmpty()) {
+            log.info("redis findAll success !!");
+            return pharmacyDtoList;
+        }
+
 
         //문제있어서 비어있으면 db에서 값가져오기
         //db

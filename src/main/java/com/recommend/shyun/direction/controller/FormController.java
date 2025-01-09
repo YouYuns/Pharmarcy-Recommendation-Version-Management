@@ -24,6 +24,8 @@ public class FormController {
 
     @PostMapping("/search")
     public ModelAndView postDirection(@ModelAttribute InputDto inputDto)  {
+        System.out.println(inputDto);
+        System.out.println("inputDto");
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("output");
         modelAndView.addObject("outputFormList",

@@ -19,7 +19,7 @@ import java.util.Objects;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class PharmachRedisTemplateService {
+public class PharmacyRedisTemplateService {
 
     //KEY값을 지정
     private static final String CACHE_KEY = "PHARMACY";
